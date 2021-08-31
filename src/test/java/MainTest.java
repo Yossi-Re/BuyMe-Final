@@ -104,7 +104,7 @@ public class MainTest {
     @AfterClass
     public static void afterClass() {
         test.log(Status.INFO, "@After test " + "After test method");
-        //driver.quit();
+        driver.quit();
         // build and flush report
         extent.flush();
     }
