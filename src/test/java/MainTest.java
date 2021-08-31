@@ -1,12 +1,10 @@
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -93,9 +91,14 @@ public class MainTest {
     public void assertSenderReceiverNames() {
         SenderReceiverScreen step4 = new SenderReceiverScreen();
         step4.giftForSomeoneElse();
-        Assert.assertEquals(Constants.NAME, driver.findElement(By.xpath("//*[@id=\"ember2187\"]")).getText());
-        Assert.assertEquals(Constants.receiverName, driver.findElement(By.name("מי הזוכה המאושר? יש להשלים את שם המקבל/ת")).getText());
-        test.log(Status.FAIL, "Send/Received names were not completed " + e.getMessage());
+        try {
+            Assert.assertEquals(Constants.NAME, driver.findElement(By.xpath("//*[@id=\"ember2187\"]")).getText());
+            Assert.assertEquals(Constants.receiverName, driver.findElement(By.name("מי הזוכה המאושר? יש להשלים את שם המקבל/ת")).getText());
+        }catch(NoSuchElementException e){
+            test.log(Status.FAIL, "Send/Received names were not completed " + e.getMessage());
+            test.info("details", MediaEntityBuilder.createScreenCaptureFromPath(takeScreenShot()).build());
+        }
+
     }
 
     @AfterClass
@@ -106,17 +109,18 @@ public class MainTest {
         extent.flush();
     }
 
-    private static String takeScreenShot(WebDriver driver, String ImagesPath) {
+    private static String takeScreenShot() {
+        String ImageFinal = String.valueOf(System.currentTimeMillis());
         TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
         File screenShotFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
-        File destinationFile = new File(ImagesPath + ".png");
+        File destinationFile = new File(ImageFinal + ".png");
         try {
             FileUtils.copyFile(screenShotFile, destinationFile);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        return ImagesPath + ".png";
+        return ImageFinal + ".png";
     }
 
 }
