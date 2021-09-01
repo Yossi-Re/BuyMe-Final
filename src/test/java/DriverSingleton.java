@@ -13,7 +13,7 @@ public class DriverSingleton {
 
     private static String getData (String keyName) throws Exception {
         System.out.println(System.getProperty("user.dir"));
-        //File fXmlFile = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\data.xml");
+
         File fXmlFile = new File(System.getProperty("user.dir") + "/src/main/resources/data.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -26,16 +26,15 @@ public class DriverSingleton {
         if(driver == null){
             String type= getData("browserType");;
             if(type.equals("Chrome")){
-                ///Users/liortamir/SDK/chrome-web-driver
+
                  System.setProperty("webdriver.chrome.driver" , "C:\\Users\\ereuv\\Downloads\\chromedriver_win32 (4)\\chromedriver.exe");
-                //System.setProperty("webdriver.chrome.driver" , "/Users/liortamir/SDK/chrome-web-driver/chromedriver");
+
                 driver = new ChromeDriver();
             }else if(type.equals("FF")){
                 System.setProperty("webdriver.firefox.driver", "C:\\geckodriver\\geckodriver.exe");
                 driver = new FirefoxDriver();
             }
-//            System.setProperty("webdriver.chrome.driver" , "C:\\Users\\ereuv\\Downloads\\chromedriver_win32 (4)\\chromedriver.exe");
-//            driver = new ChromeDriver();
+
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 //            driver.get("https://buyme.co.il/");
         }
